@@ -1,0 +1,1 @@
+GET http://localhost:3000/users/50?page=10
