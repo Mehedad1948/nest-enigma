@@ -15,7 +15,7 @@ import { GetUsersParamDto } from './dtos/get-user.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
 import { UsersService } from './providers/users.service';
 
-// Controllers Should ONLY hold routing logic and All other logics should be Written in Providers
+// 🚀 Controllers Should ONLY hold routing logic and All other logics should be Written in Providers
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
