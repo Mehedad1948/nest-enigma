@@ -3,5 +3,16 @@ Content-Type: application/json
 
 {
     "title": "Title one",
-    "content": "Content one" 
-}
+    "slug": "title-one",
+    "content": "Content one",
+    "postType": "post",
+    "status": "draft",
+    "metaOptions": 
+        {
+            "metaValue": "{\"key\":\"description\",\"value\":\"Description one\"}"
+        }
+    ,
+    // "tags": ["tag1", "tag2"],
+    // "schema": "{}",
+    "image": "https://example.com/image.jpg"
+    }
