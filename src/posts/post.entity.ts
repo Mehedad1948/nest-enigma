@@ -51,7 +51,7 @@ export class Post {
   // @Column({ nullable: true })
   // tags?: string[];
 
-  @OneToOne(() => MetaOption)
-  @JoinColumn()
+  @OneToOne(() => MetaOption, { cascade: true, eager: true })
+  @JoinColumn({})
   metaOptions?: MetaOption;
 }

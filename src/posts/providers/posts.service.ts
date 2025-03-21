@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostsDto } from '../dtos/create-post.dto';
 import { UsersService } from 'src/users/providers/users.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,38 +16,25 @@ export class PostsServices {
     @InjectRepository(MetaOption)
     private readonly metaOptionRepository: Repository<MetaOption>,
   ) {}
-  public getAllPosts(limit: number) {
+  public async getAllPosts(limit: number) {
     const user = this.userService.findOneById(limit);
-    return [
-      {
-        id: 1,
-        user,
-        title: 'First Post',
-        content: 'This is the content of the first post',
-      },
-      {
-        id: 2,
-        user,
-        title: 'Second Post',
-        content: 'This is the content of the second post',
-      },
-    ].slice(0, limit);
+    return await this.postRepository.find();
   }
 
   public async createPost(createPostsDto: CreatePostsDto) {
-    const metaOptions = createPostsDto.metaOptions
-      ? this.metaOptionRepository.create(createPostsDto.metaOptions)
-      : undefined;
-
-    if (metaOptions) {
-      await this.metaOptionRepository.save(metaOptions);
-    }
-
-    const post = this.postRepository.create({
-      ...createPostsDto,
-      metaOptions: metaOptions,
-    });
-
+    const post = this.postRepository.create(createPostsDto);
     return await this.postRepository.save(post);
+  }
+
+  public async deletePost(id: number) {
+    const post = await this.postRepository.findOneBy({ id });
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    await this.postRepository.delete(id);
+    if (post.metaOptions) {
+      await this.metaOptionRepository.delete(post.metaOptions.id);
+    }
+    return { id, deleted: true };
   }
 }

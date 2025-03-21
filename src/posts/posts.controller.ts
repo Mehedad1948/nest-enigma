@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   DefaultValuePipe,
+  Delete,
   Get,
+  Param,
   ParseIntPipe,
   Post,
   Query,
@@ -25,5 +27,12 @@ export class PostsController {
     console.log('🔥🔥', createPostsDto);
 
     return this.postsServices.createPost(createPostsDto);
+  }
+
+  @Delete(':id')
+  public deletePost(@Param('id') id: number) {
+    console.log('🔥🔥 deletePost', id);
+
+    return this.postsServices.deletePost(id);
   }
 }

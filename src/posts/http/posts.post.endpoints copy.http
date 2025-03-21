@@ -3,13 +3,13 @@ Content-Type: application/json
 
 {
     "title": "Title one",
-    "slug": "title-one",
+    "slug": "title-one-1-2",
     "content": "Content one",
     "postType": "post",
     "status": "draft",
     "metaOptions": 
         {
-            "metaValue": "{\"key\":\"description\",\"value\":\"Description one\"}"
+            "metaValue": "{\"key\":\"description-2\",\"value\":\"Description one\"}"
         }
     ,
     // "tags": ["tag1", "tag2"],
