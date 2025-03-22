@@ -26,8 +26,9 @@ export class UsersController {
   public getAllUsers(
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: any,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: any,
+    @Query('getUsersParamDto') getUsersParamDto: GetUsersParamDto,
   ) {
-    return `Users get method ${page} ${JSON.stringify(limit)}`;
+    return this.usersService.findAll(getUsersParamDto, limit, page);
   }
 
   @ApiQuery({ name: 'limit', type: 'number', required: false })

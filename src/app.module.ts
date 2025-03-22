@@ -7,25 +7,35 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import appConfig from './config/app.config';
+import databaseConfig from './config/database.configs';
+const ENV = process.env.NODE_ENV || 'development';
+
 @Module({
   imports: [
     UsersModule,
     PostsModule,
     AuthModule,
     TagsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: [`.env.${ENV}`],
+      load: [appConfig, databaseConfig],
+    }),
     TypeOrmModule.forRootAsync({
-      imports: [],
-      inject: [],
-      useFactory: () => ({
-        type: 'postgres',
-        host: 'localhost',
-        port: 5432,
-        username: 'postgres',
-        password: '55555',
-        database: 'nestjs-blog',
-        autoLoadEntities: true,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        port: +configService.get('database.port'),
+        username: configService.get('database.username'),
+        password: configService.get('database.password'),
+        database: configService.get('database.name'),
+        host: configService.get('database.host'),
         // entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true, // TODO: Remove in production
+        autoLoadEntities: configService.get('database.autoLoadEntities'),
+        synchronize: configService.get('database.synchronize'),
+        type: 'postgres',
       }),
     }),
     MetaOptionsModule,
