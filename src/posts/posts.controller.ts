@@ -6,11 +6,13 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
 import { CreatePostsDto } from './dtos/create-post.dto';
 import { PostsServices } from './providers/posts.service';
+import { PatchPostDto } from './dtos/patch-post.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -27,6 +29,11 @@ export class PostsController {
     console.log('🔥🔥', createPostsDto);
 
     return this.postsServices.createPost(createPostsDto);
+  }
+
+  @Patch()
+  public updatePost(@Body() patchPostsDto: PatchPostDto) {
+    return this.postsServices.update(patchPostsDto);
   }
 
   @Delete(':id')

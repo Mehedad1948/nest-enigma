@@ -1,6 +1,6 @@
 POST http://localhost:3000/tags
 Content-Type: application/json
 {
-  "name": "tag",
-  "slug": "tag-1"
+  "name": "tag-15",
+  "slug": "tag-8"
 }

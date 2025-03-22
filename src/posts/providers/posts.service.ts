@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { Post } from '../post.entity';
 import { TagsService } from 'src/tags/providers/tags.service';
 import { Tag } from 'src/tags/tag.entity';
+import { PatchPostDto } from '../dtos/patch-post.dto';
 @Injectable()
 export class PostsServices {
   constructor(
@@ -47,5 +48,29 @@ export class PostsServices {
     //   await this.metaOptionRepository.delete(post.metaOptions.id);
     // }
     return { id, deleted: true };
+  }
+
+  public async update(patchPostDto: PatchPostDto) {
+    let tags = await this.tagsService.findMultipleTags(patchPostDto.tags || []);
+
+    let post = await this.postRepository.findOneBy({
+      id: patchPostDto.id,
+    });
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    post.tags = tags;
+    post.title = patchPostDto.title ?? post.title;
+    post.content = patchPostDto.content ?? post.content;
+    post.postType = patchPostDto.postType ?? post.postType;
+    post.status = patchPostDto.status ?? post.status;
+    post.schema = patchPostDto.schema ?? post.schema;
+    post.slug = patchPostDto.slug ?? post.slug;
+    post.image = patchPostDto.image ?? post.image;
+    // post.author = patchPostDto.authorId ?? post.author;
+
+    return await this.postRepository.save(post);
   }
 }

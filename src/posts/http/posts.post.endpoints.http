@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "title": "Title one",
-    "slug": "title-one-7",
+    "slug": "title-one-20",
     "content": "Content one",
     "postType": "post",
     "status": "draft",

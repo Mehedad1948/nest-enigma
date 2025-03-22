@@ -1,0 +1,20 @@
+PATCH http://localhost:3000/posts
+Content-Type: application/json
+
+{
+    "id":8,
+    "title": "Title one updated",
+    // "slug": "title-one-7",
+    // "content": "Content one",
+    // "postType": "post",
+    // "status": "draft",
+    // "metaOptions": 
+    //     {
+    //         "metaValue": "{\"key\":\"description-2\",\"value\":\"Description one\"}"
+    //     }
+    // ,
+    "tags": [7,4],
+    // "schema": "{}",
+    "image": "https://example.com/image.jpg",
+    "authorId": 1
+    }
