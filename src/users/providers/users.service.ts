@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { GetUsersParamDto } from '../dtos/get-user.dto';
 import { User } from '../user.entity';
 import { Repository } from 'typeorm';
@@ -35,7 +39,11 @@ export class UsersService {
     ];
   }
 
-  public findOneById(id: number) {
-    return [{ firstName: 'John', email: 'john@doe', id }];
+  public async findOneById(id: number) {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 }

@@ -2,12 +2,16 @@ import { MetaOption } from 'src/meta-options/meta-option.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { postStatus } from './enums/postStatus.enum';
 import { PostType } from './enums/postType.enum';
+import { User } from 'src/users/user.entity';
+import { Tag } from 'src/tags/tag.entity';
 @Entity('posts')
 export class Post {
   @PrimaryGeneratedColumn()
@@ -47,11 +51,17 @@ export class Post {
   @Column({ nullable: true })
   image?: string;
 
-  //   To Do in RelationShips
-  // @Column({ nullable: true })
-  // tags?: string[];
+  @ManyToMany(() => Tag, { eager: true })
+  @JoinTable()
+  tags?: Tag[];
 
-  @OneToOne(() => MetaOption, { cascade: true, eager: true })
-  @JoinColumn({})
+  @OneToOne(() => MetaOption, (metaOption) => metaOption.post, {
+    cascade: true,
+    eager: true,
+  })
+  // @JoinColumn({})
   metaOptions?: MetaOption;
+
+  @ManyToOne(() => User, (user) => user.posts, { eager: true })
+  author: User;
 }

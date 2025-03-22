@@ -4,6 +4,7 @@ import {
   MaxLength,
   Matches,
   IsJSON,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateTagDto {
@@ -20,13 +21,16 @@ export class CreateTagDto {
   })
   slug: string;
 
+  @IsOptional()
   @IsString()
   description?: string;
 
+  @IsOptional()
   @IsString()
   @IsJSON()
   schema?: string;
 
+  @IsOptional()
   @IsString()
   featuredImage?: string;
 }

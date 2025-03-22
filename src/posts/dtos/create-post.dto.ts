@@ -1,9 +1,11 @@
 import {
   IsArray,
   IsEnum,
+  IsInt,
   IsISO8601,
   IsJSON,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUrl,
@@ -71,14 +73,13 @@ export class CreatePostsDto {
   schema?: string;
 
   @ApiProperty({
-    description: 'The tags of the post',
-    example: ['tag1', 'tag2'],
+    description: 'The tags ids of the post',
+    example: [5, 6],
   })
   @IsArray()
-  @IsString({ each: true })
-  @MinLength(3, { each: true })
+  @IsInt({ each: true })
   @IsOptional()
-  tags?: string[];
+  tags?: number[];
 
   @ApiProperty({
     description: 'The image of the post',
@@ -108,4 +109,14 @@ export class CreatePostsDto {
   @ValidateNested()
   @Type(() => CreatePostMetaOptionsDto)
   metaOptions?: CreatePostMetaOptionsDto;
+
+  @ApiProperty({
+    type: 'integer',
+    required: true,
+    description: 'The author id of the post',
+    example: 1,
+  })
+  @IsNotEmpty()
+  @IsInt()
+  authorId: number;
 }

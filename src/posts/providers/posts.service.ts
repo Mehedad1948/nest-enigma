@@ -5,10 +5,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MetaOption } from 'src/meta-options/meta-option.entity';
 import { Repository } from 'typeorm';
 import { Post } from '../post.entity';
+import { TagsService } from 'src/tags/providers/tags.service';
+import { Tag } from 'src/tags/tag.entity';
 @Injectable()
 export class PostsServices {
   constructor(
     private readonly userService: UsersService,
+
+    private readonly tagsService: TagsService,
 
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
@@ -18,23 +22,30 @@ export class PostsServices {
   ) {}
   public async getAllPosts(limit: number) {
     const user = this.userService.findOneById(limit);
-    return await this.postRepository.find();
+    return await this.postRepository.find({
+      // relations: ['author', 'tags'],
+    });
   }
 
   public async createPost(createPostsDto: CreatePostsDto) {
-    const post = this.postRepository.create(createPostsDto);
+    const author = await this.userService.findOneById(createPostsDto.authorId);
+    let tags: Tag[] = [];
+    if (createPostsDto.tags) {
+      tags = await this.tagsService.findMultipleTags(createPostsDto.tags);
+    }
+    const post = this.postRepository.create({
+      ...createPostsDto,
+      author,
+      tags,
+    });
     return await this.postRepository.save(post);
   }
 
   public async deletePost(id: number) {
-    const post = await this.postRepository.findOneBy({ id });
-    if (!post) {
-      throw new NotFoundException('Post not found');
-    }
     await this.postRepository.delete(id);
-    if (post.metaOptions) {
-      await this.metaOptionRepository.delete(post.metaOptions.id);
-    }
+    // if (post.metaOptions) {
+    //   await this.metaOptionRepository.delete(post.metaOptions.id);
+    // }
     return { id, deleted: true };
   }
 }

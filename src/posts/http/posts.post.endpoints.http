@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "title": "Title one",
-    "slug": "title-one-1-2",
+    "slug": "title-one-7",
     "content": "Content one",
     "postType": "post",
     "status": "draft",
@@ -12,7 +12,8 @@ Content-Type: application/json
             "metaValue": "{\"key\":\"description-2\",\"value\":\"Description one\"}"
         }
     ,
-    // "tags": ["tag1", "tag2"],
+    "tags": [1],
     // "schema": "{}",
-    "image": "https://example.com/image.jpg"
+    "image": "https://example.com/image.jpg",
+    "authorId": 1
     }
