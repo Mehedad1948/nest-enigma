@@ -13,6 +13,7 @@ import { Post } from '../post.entity';
 import { TagsService } from 'src/tags/providers/tags.service';
 import { Tag } from 'src/tags/tag.entity';
 import { PatchPostDto } from '../dtos/patch-post.dto';
+import { GetPostsDto } from '../dtos/get-post.dto';
 @Injectable()
 export class PostsServices {
   constructor(
@@ -26,9 +27,14 @@ export class PostsServices {
     @InjectRepository(MetaOption)
     private readonly metaOptionRepository: Repository<MetaOption>,
   ) {}
-  public async getAllPosts(limit: number) {
-    const user = this.userService.findOneById(limit);
+  public async getAllPosts(userId: number, postQuery: GetPostsDto) {
+    console.log('🎉🎉🎉', postQuery);
+
+    const user = await this.userService.findOneById(userId);
     return await this.postRepository.find({
+      where: {
+        author: user,
+      },
       // relations: ['author', 'tags'],
     });
   }

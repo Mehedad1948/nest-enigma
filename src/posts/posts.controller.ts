@@ -13,15 +13,17 @@ import {
 import { CreatePostsDto } from './dtos/create-post.dto';
 import { PostsServices } from './providers/posts.service';
 import { PatchPostDto } from './dtos/patch-post.dto';
+import { GetPostsDto } from './dtos/get-post.dto';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsServices: PostsServices) {}
-  @Get()
+  @Get(':userId')
   public getAllPosts(
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query() postQuery: GetPostsDto,
+    @Param('userId') userId: number,
   ) {
-    return this.postsServices.getAllPosts(limit);
+    return this.postsServices.getAllPosts(userId, postQuery);
   }
 
   @Post()
