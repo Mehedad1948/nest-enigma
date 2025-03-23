@@ -5,12 +5,12 @@ export class PaginationQueryDto {
   @IsOptional()
   @IsPositive()
   @IsInt()
-  limit?: number;
+  limit?: number = 10;
 
   @IsNumber()
   @IsOptional()
   @IsPositive()
   @IsInt()
   //   @Type(() => Number) Replaced with transformOptions in main.ts
-  page?: number;
+  page?: number = 1;
 }
