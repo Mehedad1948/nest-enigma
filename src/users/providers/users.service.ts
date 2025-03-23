@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Inject,
   Injectable,
   NotFoundException,
@@ -62,10 +64,13 @@ export class UsersService {
     limit: number,
     page: number,
   ) {
-    return [
-      { firstName: 'Johasddsdsdsn', email: 'john@doe' },
-      { firstName: 'John2', email: 'john@doe2' },
-    ];
+    throw new HttpException(
+      { message: 'API does not', status: HttpStatus.MOVED_PERMANENTLY },
+      HttpStatus.MOVED_PERMANENTLY,
+      {
+        cause: new Error('API does not exist'),
+      },
+    );
   }
 
   public async findOneById(id: number) {
