@@ -3,12 +3,12 @@ Content-Type: application/json
 {"users":[
   {
     "firstName": "John",
-    "email": "jasdsaohn.sdfsdf@example.com",
+    "email": "jasdsadasdsasdsohn.sdfsdf@example.com",
     "password": "strong@Password123"
   },
   {
     "firstName": "Jane",
-    "email": "jasdasdsane.doe@fdsfdd.com",
+    "email": "jasdsadsdasdsane.doe@fdsfdd.com",
     "password": "strong@Password123"
   }
 ]}
