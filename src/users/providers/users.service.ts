@@ -9,11 +9,13 @@ import {
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import profileConfig from '../config/profile.config';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { GetUsersParamDto } from '../dtos/get-user.dto';
 import { User } from '../user.entity';
+import { UsersCreateManyProvider } from './users-create-many.provider';
+import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 @Injectable()
 export class UsersService {
   constructor(
@@ -23,8 +25,8 @@ export class UsersService {
     @Inject(profileConfig.KEY)
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
 
-    // Inject datasource
-    private readonly datasource: DataSource,
+    // Inject createMayProvider
+    private readonly usersCreateManyProvider: UsersCreateManyProvider,
   ) {}
 
   public async createUser(createUserDto: CreateUserDto) {
@@ -95,33 +97,7 @@ export class UsersService {
     return user;
   }
 
-  public async createMany(createUsersDto: CreateUserDto[]) {
-    let newUsers: User[] = [];
-
-    // Create Query runner instance
-    const queryRunner = this.datasource.createQueryRunner();
-
-    // Connect Query runner to datasource
-    await queryRunner.connect();
-
-    // Start Transaction
-    await queryRunner.startTransaction();
-
-    try {
-      for (const user of createUsersDto) {
-        let newUser = queryRunner.manager.create(User, user);
-        let result = await queryRunner.manager.save(newUser);
-        newUsers.push(result);
-      }
-      // If successful commit
-      await queryRunner.commitTransaction();
-      return newUsers;
-    } catch (error) {
-      // If unsuccessful rollback
-      await queryRunner.rollbackTransaction();
-    } finally {
-      // Release connection
-      await queryRunner.release();
-    }
+  public async createMany(createManyUsersDto: CreateManyUsersDto) {
+    return this.usersCreateManyProvider.createMany(createManyUsersDto);
   }
 }

@@ -15,6 +15,7 @@ import { GetUsersParamDto } from './dtos/get-user.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
 import { UsersService } from './providers/users.service';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 
 // 🚀 Controllers Should ONLY hold routing logic and All other logics should be Written in Providers
 @Controller('users')
@@ -46,6 +47,11 @@ export class UsersController {
     @Headers() headers: any,
   ) {
     return this.usersService.createUser(createUserDto);
+  }
+
+  @Post('create-many')
+  public createManyUsers(@Body() createManyUsersDto: CreateManyUsersDto) {
+    return this.usersService.createMany(createManyUsersDto);
   }
 
   @Patch()
