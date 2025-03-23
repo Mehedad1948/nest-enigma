@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { CreatePostsDto } from '../dtos/create-post.dto';
 import { UsersService } from 'src/users/providers/users.service';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -51,11 +56,40 @@ export class PostsServices {
   }
 
   public async update(patchPostDto: PatchPostDto) {
-    let tags = await this.tagsService.findMultipleTags(patchPostDto.tags || []);
+    let tags: Tag[] = [];
+    try {
+      tags = await this.tagsService.findMultipleTags(patchPostDto.tags || []);
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Unable to find tags, please try again later',
+        {
+          description: 'Error connecting to the database',
+          cause: error,
+        },
+      );
+    }
 
-    let post = await this.postRepository.findOneBy({
-      id: patchPostDto.id,
-    });
+    if (
+      !!patchPostDto.tags?.length &&
+      tags?.length !== patchPostDto.tags?.length
+    ) {
+      throw new BadRequestException('Tags do not match');
+    }
+
+    let post: Post | null = null;
+    try {
+      post = await this.postRepository.findOneBy({
+        id: patchPostDto.id,
+      });
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Unable to find post, please try again later',
+        {
+          description: 'Error connecting to the database',
+          cause: error,
+        },
+      );
+    }
 
     if (!post) {
       throw new NotFoundException('Post not found');
@@ -70,7 +104,16 @@ export class PostsServices {
     post.slug = patchPostDto.slug ?? post.slug;
     post.image = patchPostDto.image ?? post.image;
     // post.author = patchPostDto.authorId ?? post.author;
-
-    return await this.postRepository.save(post);
+    try {
+      return await this.postRepository.save(post);
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Unable to update post, please try again later',
+        {
+          description: 'Error connecting to the database',
+          cause: error,
+        },
+      );
+    }
   }
 }

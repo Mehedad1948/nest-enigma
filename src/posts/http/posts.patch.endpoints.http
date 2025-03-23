@@ -13,7 +13,7 @@ Content-Type: application/json
     //         "metaValue": "{\"key\":\"description-2\",\"value\":\"Description one\"}"
     //     }
     // ,
-    "tags": [7,4],
+    "tags": [7,25],
     // "schema": "{}",
     "image": "https://example.com/image.jpg",
     "authorId": 1
