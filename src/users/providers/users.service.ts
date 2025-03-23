@@ -3,14 +3,15 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  RequestTimeoutException,
 } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import profileConfig from '../config/profile.config';
+import { CreateUserDto } from '../dtos/create-user.dto';
 import { GetUsersParamDto } from '../dtos/get-user.dto';
 import { User } from '../user.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUserDto } from '../dtos/create-user.dto';
-import { ConfigType } from '@nestjs/config';
-import profileConfig from '../config/profile.config';
 @Injectable()
 export class UsersService {
   constructor(
@@ -23,14 +24,36 @@ export class UsersService {
 
   public async createUser(createUserDto: CreateUserDto) {
     //  check is user already exists with same email
-    const user = await this.userRepository.findOne({
-      where: { email: createUserDto.email },
-    });
+    let user: User | null = null;
+    try {
+      user = await this.userRepository.findOne({
+        where: { email: createUserDto.email },
+      });
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Unable to create user, please try again later',
+        {
+          description: 'Error connecting to the database',
+          cause: error,
+        },
+      );
+    }
+
     if (user) {
       throw new BadRequestException('User already exists');
     } else {
-      const user = this.userRepository.create(createUserDto);
-      return this.userRepository.save(user);
+      const newUser = this.userRepository.create(createUserDto);
+      try {
+        return this.userRepository.save(newUser);
+      } catch (error) {
+        throw new RequestTimeoutException(
+          'Unable to create user, please try again later',
+          {
+            description: 'Error connecting to the database',
+            cause: error,
+          },
+        );
+      }
     }
   }
 
@@ -39,7 +62,6 @@ export class UsersService {
     limit: number,
     page: number,
   ) {
-
     return [
       { firstName: 'Johasddsdsdsn', email: 'john@doe' },
       { firstName: 'John2', email: 'john@doe2' },
@@ -47,7 +69,18 @@ export class UsersService {
   }
 
   public async findOneById(id: number) {
-    const user = await this.userRepository.findOneBy({ id });
+    let user: User | null = null;
+    try {
+      user = await this.userRepository.findOneBy({ id });
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Unable to find user, please try again later',
+        {
+          description: 'Error connecting to the database',
+          cause: error,
+        },
+      );
+    }
     if (!user) {
       throw new NotFoundException('User not found');
     }
