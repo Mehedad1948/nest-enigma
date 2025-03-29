@@ -1,10 +1,27 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Body,
+  Post,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { IsAuthenticatedDto } from './dtos/isAuthenticated.dto';
+import { SignInDto } from './dtos/signin.dto';
+import { AuthService } from './providers/auth.service';
 
 @Controller('auth')
 export class AuthController {
+  constructor(private readonly authService: AuthService) {}
   @Get('/:userId')
   public isAuthenticated(@Param() isAuthenticatedDto: IsAuthenticatedDto) {
     return isAuthenticatedDto.userId;
+  }
+
+  @Post('sign-in')
+  @HttpCode(HttpStatus.OK)
+  public signIn(@Body() signInDto: SignInDto) {
+    return this.authService.signIn(signInDto);
   }
 }

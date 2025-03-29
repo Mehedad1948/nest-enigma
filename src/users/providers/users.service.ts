@@ -16,6 +16,8 @@ import { GetUsersParamDto } from '../dtos/get-user.dto';
 import { User } from '../user.entity';
 import { UsersCreateManyProvider } from './users-create-many.provider';
 import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
+import { CreateUserProvider } from './create-user.provider';
+import { FindOneUserByEmailProvider } from './find-one-user-by-email.provider';
 @Injectable()
 export class UsersService {
   constructor(
@@ -27,42 +29,13 @@ export class UsersService {
 
     // Inject createMayProvider
     private readonly usersCreateManyProvider: UsersCreateManyProvider,
+
+    // Inject createUserProvider
+    private readonly createUserProvider: CreateUserProvider,
+
+    // Inject findOneUserByEmailProvider
+    private readonly usersFindOneByEmailProvider: FindOneUserByEmailProvider,
   ) {}
-
-  public async createUser(createUserDto: CreateUserDto) {
-    //  check is user already exists with same email
-    let user: User | null = null;
-    try {
-      user = await this.userRepository.findOne({
-        where: { email: createUserDto.email },
-      });
-    } catch (error) {
-      throw new RequestTimeoutException(
-        'Unable to create user, please try again later',
-        {
-          description: 'Error connecting to the database',
-          cause: error,
-        },
-      );
-    }
-
-    if (user) {
-      throw new BadRequestException('User already exists');
-    } else {
-      const newUser = this.userRepository.create(createUserDto);
-      try {
-        return this.userRepository.save(newUser);
-      } catch (error) {
-        throw new RequestTimeoutException(
-          'Unable to create user, please try again later',
-          {
-            description: 'Error connecting to the database',
-            cause: error,
-          },
-        );
-      }
-    }
-  }
 
   public findAll(
     getUsersParamDto: GetUsersParamDto,
@@ -76,6 +49,10 @@ export class UsersService {
         cause: new Error('API does not exist'),
       },
     );
+  }
+
+  public async createUser(createUserDto: CreateUserDto) {
+    return this.createUserProvider.createUser(createUserDto);
   }
 
   public async findOneById(id: number) {
@@ -95,6 +72,10 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
     return user;
+  }
+
+  public async findOneByEmail(email: string) {
+    return this.usersFindOneByEmailProvider.findOneByEmail(email);
   }
 
   public async createMany(createManyUsersDto: CreateManyUsersDto) {

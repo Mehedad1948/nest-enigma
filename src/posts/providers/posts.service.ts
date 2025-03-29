@@ -14,6 +14,8 @@ import { TagsService } from 'src/tags/providers/tags.service';
 import { Tag } from 'src/tags/tag.entity';
 import { PatchPostDto } from '../dtos/patch-post.dto';
 import { GetPostsDto } from '../dtos/get-post.dto';
+import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
+import { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
 @Injectable()
 export class PostsServices {
   constructor(
@@ -21,22 +23,26 @@ export class PostsServices {
 
     private readonly tagsService: TagsService,
 
+    private readonly paginationProvider: PaginationProvider,
+
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
 
     @InjectRepository(MetaOption)
     private readonly metaOptionRepository: Repository<MetaOption>,
   ) {}
-  public async getAllPosts(userId: number, postQuery: GetPostsDto) {
-    console.log('🎉🎉🎉', postQuery);
-
-    const user = await this.userService.findOneById(userId);
-    return await this.postRepository.find({
-      where: {
-        author: user,
+  public async getAllPosts(
+    userId: number,
+    postQuery: GetPostsDto,
+  ): Promise<Paginated<Post>> {
+    // const user = await this.userService.findOneById(userId);
+    return await this.paginationProvider.paginateQuery(
+      {
+        limit: postQuery.limit,
+        page: postQuery.page,
       },
-      // relations: ['author', 'tags'],
-    });
+      this.postRepository,
+    );
   }
 
   public async createPost(createPostsDto: CreatePostsDto) {

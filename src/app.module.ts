@@ -11,6 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.configs';
 import environmentValidation from './config/environment.validation';
+import { PaginationModule } from './common/pagination/dtos/pagination.module';
 const ENV = process.env.NODE_ENV || 'development';
 
 @Module({
@@ -19,6 +20,7 @@ const ENV = process.env.NODE_ENV || 'development';
     PostsModule,
     AuthModule,
     TagsModule,
+    PaginationModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [`.env.${ENV}`],
@@ -28,17 +30,21 @@ const ENV = process.env.NODE_ENV || 'development';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        port: +configService.get('database.port'),
-        username: configService.get('database.username'),
-        password: configService.get('database.password'),
-        database: configService.get('database.name'),
-        host: configService.get('database.host'),
-        // entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        autoLoadEntities: configService.get('database.autoLoadEntities'),
-        synchronize: configService.get('database.synchronize'),
-        type: 'postgres',
-      }),
+      useFactory: (configService: ConfigService) => {
+        console.log('✨✨✨', configService.get('database.autoLoadEntities'));
+
+        return {
+          port: +configService.get('database.port'),
+          username: configService.get('database.username'),
+          password: configService.get('database.password'),
+          database: configService.get('database.name'),
+          host: configService.get('database.host'),
+          // entities: [__dirname + '/**/*.entity{.ts,.js}'],
+          autoLoadEntities: configService.get('database.autoLoadEntities'),
+          synchronize: configService.get('database.synchronize'),
+          type: 'postgres',
+        };
+      },
     }),
     MetaOptionsModule,
   ],

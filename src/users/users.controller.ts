@@ -3,19 +3,18 @@ import {
   Controller,
   DefaultValuePipe,
   Get,
-  Headers,
   Param,
   ParseIntPipe,
   Patch,
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUsersParamDto } from './dtos/get-user.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
 import { UsersService } from './providers/users.service';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
-import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 
 // 🚀 Controllers Should ONLY hold routing logic and All other logics should be Written in Providers
 @Controller('users')
@@ -42,10 +41,7 @@ export class UsersController {
   }
 
   @Post()
-  public createUsers(
-    @Body() createUserDto: CreateUserDto,
-    @Headers() headers: any,
-  ) {
+  public createUsers(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }
 

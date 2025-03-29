@@ -1,19 +1,17 @@
 import {
   Body,
   Controller,
-  DefaultValuePipe,
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   Query,
 } from '@nestjs/common';
 import { CreatePostsDto } from './dtos/create-post.dto';
-import { PostsServices } from './providers/posts.service';
-import { PatchPostDto } from './dtos/patch-post.dto';
 import { GetPostsDto } from './dtos/get-post.dto';
+import { PatchPostDto } from './dtos/patch-post.dto';
+import { PostsServices } from './providers/posts.service';
 
 @Controller('posts')
 export class PostsController {
