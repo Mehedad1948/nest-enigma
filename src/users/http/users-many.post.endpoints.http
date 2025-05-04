@@ -1,5 +1,6 @@
 POST http://localhost:3000/users/create-many  
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiam9zYXNhZGVAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDYyODkxMDQsImV4cCI6MTc0NjI5MjcwNCwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.OTE1C4zlpyW5aLLrkDXUYXN1UwxM36QtjTVPwvfgRk8
 {"users":[
   {
     "firstName": "John",

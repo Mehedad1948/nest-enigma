@@ -30,7 +30,7 @@ export class AccessTokenGuard implements CanActivate {
         secret: this.configService.secret,
       });
       request[REQUEST_USER_KEY] = payload;
-    } catch () {
+    } catch {
       throw new UnauthorizedException();
     }
     return true;
