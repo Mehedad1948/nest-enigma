@@ -1,6 +1,6 @@
 POST http://localhost:3000/posts 
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiam9zYXNhZGVAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDc0MDQ1NjksImV4cCI6MTc0NzQwODE2OSwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.z70lMBcbp2OODvpEd5u99CItYabwkRka0IgVfcn1mUU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiam9zYXNhZGVAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDc0MTAwMjYsImV4cCI6MTc0NzQxMzYyNiwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.HCqyyH6o2sZVFybl4mCaZjkjzxDzL-31WiJEJg2ArHA
 {
     "title": "Title one",
     "slug": "title-one-20",
@@ -14,6 +14,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsI
     ,
     // "tags": [1],
     // "schema": "{}",
-    "image": "https://example.com/image.jpg",
-    "authorId": 1
+    "image": "https://example.com/image.jpg"
     }
