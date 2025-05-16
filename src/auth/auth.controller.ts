@@ -27,4 +27,9 @@ export class AuthController {
   public signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto);
   }
+  @Post('sign-in')
+  @Auth(AuthType.none)
+  public refreshToken(@Body() signInDto: SignInDto) {
+    return this.authService.signIn(signInDto);
+  }
 }
