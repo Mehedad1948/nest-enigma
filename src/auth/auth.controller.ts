@@ -12,6 +12,7 @@ import { SignInDto } from './dtos/signin.dto';
 import { AuthService } from './providers/auth.service';
 import { Auth } from './decorator/auth.decorator';
 import { AuthType } from './enums/auth.decorator';
+import { RefreshTokenDto } from './dtos/refresh-token.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -27,9 +28,10 @@ export class AuthController {
   public signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto);
   }
-  @Post('sign-in')
+
+  @Post('refresh-tokens')
   @Auth(AuthType.none)
-  public refreshToken(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto);
+  public refreshTokens(@Body() refreshTokenDto: RefreshTokenDto) {
+    return this.authService.refreshTokens(refreshTokenDto);
   }
 }
