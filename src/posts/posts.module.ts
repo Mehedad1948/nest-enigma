@@ -8,10 +8,11 @@ import { MetaOption } from 'src/meta-options/meta-option.entity';
 import { TagsModule } from 'src/tags/tags.module';
 import { Tag } from 'src/tags/tag.entity';
 import { PaginationModule } from 'src/common/pagination/dtos/pagination.module';
+import { CreatePostProvider } from './providers/create-post.provider';
 
 @Module({
   controllers: [PostsController],
-  providers: [PostsServices],
+  providers: [PostsServices, CreatePostProvider],
   imports: [
     UsersModule,
     TagsModule,

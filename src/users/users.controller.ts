@@ -18,13 +18,13 @@ import { GetUsersParamDto } from './dtos/get-user.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
 import { UsersService } from './providers/users.service';
 
-// 🚀 Controllers Should ONLY hold routing logic and All other logics should be Written in Providers
 @Controller('users')
 @ApiTags('Users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
+  @Auth(AuthType.none, AuthType.Bearer)
   public getAllUsers(
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: any,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: any,
@@ -42,9 +42,9 @@ export class UsersController {
     return this.usersService.findAll(getUsersParamDto, limit, page);
   }
 
-  @Post()
   // @SetMetadata('authType', 'none')
-  @Auth(AuthType.none)
+  @Post()
+  @Auth(AuthType.none, AuthType.Bearer)
   public createUsers(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }

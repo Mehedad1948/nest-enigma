@@ -1,6 +1,6 @@
 POST http://localhost:3000/posts 
 Content-Type: application/json
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiam9zYXNhZGVAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDc0MDQ1NjksImV4cCI6MTc0NzQwODE2OSwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.z70lMBcbp2OODvpEd5u99CItYabwkRka0IgVfcn1mUU
 {
     "title": "Title one",
     "slug": "title-one-20",

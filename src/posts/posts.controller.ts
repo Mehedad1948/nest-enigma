@@ -12,6 +12,8 @@ import { CreatePostsDto } from './dtos/create-post.dto';
 import { GetPostsDto } from './dtos/get-post.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
 import { PostsServices } from './providers/posts.service';
+import { ActiveUser } from 'src/auth/decorator/active-user.decorator';
+import { ActiveUserData } from 'src/auth/interfaces/active-user-data.interface';
 
 @Controller('posts')
 export class PostsController {
@@ -25,10 +27,11 @@ export class PostsController {
   }
 
   @Post()
-  public createPost(@Body() createPostsDto: CreatePostsDto) {
-    console.log('🔥🔥', createPostsDto);
-
-    return this.postsServices.createPost(createPostsDto);
+  public createPost(
+    @Body() createPostsDto: CreatePostsDto,
+    @ActiveUser() user: ActiveUserData,
+  ) {
+    return this.postsServices.createPost(createPostsDto, user);
   }
 
   @Patch()
