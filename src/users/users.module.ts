@@ -9,6 +9,8 @@ import { UsersCreateManyProvider } from './providers/users-create-many.provider'
 import { UsersService } from './providers/users.service';
 import { User } from './user.entity';
 import { UsersController } from './users.controller';
+import { CreateGoogleUserProvider } from './providers/create-google-user.provider';
+import { FindOneByGoogleIdProvider } from './providers/find-one-by-google-id.provider/find-one-by-google-id.provider';
 @Module({
   controllers: [UsersController],
   providers: [
@@ -16,6 +18,8 @@ import { UsersController } from './users.controller';
     UsersCreateManyProvider,
     CreateUserProvider,
     FindOneUserByEmailProvider,
+    FindOneByGoogleIdProvider,
+    CreateGoogleUserProvider,
   ],
   exports: [UsersService],
   imports: [

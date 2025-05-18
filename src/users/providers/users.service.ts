@@ -18,6 +18,9 @@ import { UsersCreateManyProvider } from './users-create-many.provider';
 import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 import { CreateUserProvider } from './create-user.provider';
 import { FindOneUserByEmailProvider } from './find-one-user-by-email.provider';
+import { CreateGoogleUserProvider } from './create-google-user.provider';
+import { GoogleUser } from '../interfaces/google-user.interface';
+import { FindOneByGoogleIdProvider } from './find-one-by-google-id.provider/find-one-by-google-id.provider';
 @Injectable()
 export class UsersService {
   constructor(
@@ -35,6 +38,10 @@ export class UsersService {
 
     // Inject findOneUserByEmailProvider
     private readonly usersFindOneByEmailProvider: FindOneUserByEmailProvider,
+
+    private readonly findOneByGoogleProvider: FindOneByGoogleIdProvider,
+
+    private readonly createGoogleUserProvider: CreateGoogleUserProvider,
   ) {}
 
   public findAll(
@@ -80,5 +87,13 @@ export class UsersService {
 
   public async createMany(createManyUsersDto: CreateManyUsersDto) {
     return this.usersCreateManyProvider.createMany(createManyUsersDto);
+  }
+
+  public async findOneByGoogle(googleId: string) {
+    return await this.findOneByGoogleProvider.findOneByGoogleId(googleId);
+  }
+
+  public async createGoogleUser(googleUser: GoogleUser) {
+    return await this.createGoogleUserProvider.createGoogleUser(googleUser);
   }
 }

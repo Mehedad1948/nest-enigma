@@ -26,9 +26,11 @@ export class SignInProvider {
     try {
       isPasswordValid = await this.hashingProvider.comparePassword(
         signInDto.password,
-        user.password,
+        user.password || '',
       );
     } catch (error) {
+      console.log(error);
+
       throw new UnauthorizedException('Invalid credentials');
     }
     if (!isPasswordValid) {
