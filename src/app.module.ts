@@ -19,7 +19,7 @@ import { AccessTokenGuard } from './auth/guards/access-token/access-token.guard'
 import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
 import { DataResponseInterceptor } from './common/interceptor/data-response/data-response.interceptor';
 import { UploadsModule } from './uploads/uploads.module';
-import { UploadsService } from './uplaods/providers/uploads.service';
+import { UploadsService } from './uploads/providers/uploads.service';
 const ENV = process.env.NODE_ENV || 'development';
 
 @Module({
@@ -71,7 +71,6 @@ const ENV = process.env.NODE_ENV || 'development';
       useClass: DataResponseInterceptor,
     },
     AccessTokenGuard,
-    UploadsService,
   ],
 })
 export class AppModule {}
