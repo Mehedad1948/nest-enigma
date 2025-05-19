@@ -11,8 +11,6 @@ import { map, Observable } from 'rxjs';
 export class DataResponseInterceptor implements NestInterceptor {
   constructor(private readonly configService: ConfigService) {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    console.log('Before ...');
-
     return next.handle().pipe(
       map((data) => ({
         data: data,

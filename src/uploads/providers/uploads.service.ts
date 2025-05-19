@@ -31,7 +31,7 @@ export class UploadsService {
 
       const uploadFile: UploadFile = {
         name: name,
-        path: `https//${this.configService.get('appConfig.awsAddress')}/${name}`,
+        path: `https://${this.configService.get('appConfig.awsBucketName')}.${this.configService.get('appConfig.awsAddress')}/${name}`,
         type: fileTypes.IMAGE,
         mime: file.mimetype,
         size: file.size,
