@@ -5,6 +5,12 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "suppressImplicitAnyIndexErrors": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "assets": [{
+    "include": "./mail/templates",
+    "outDir": "dist/",
+    "watchAssets": true
+  }]
   }
+  
 }

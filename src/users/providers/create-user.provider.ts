@@ -10,6 +10,7 @@ import { CreateUserDto } from '../dtos/create-user.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HashingProvider } from 'src/auth/providers/hashing.provider';
+import { MailService } from 'src/mail/providers/mail.service';
 @Injectable()
 export class CreateUserProvider {
   constructor(
@@ -18,6 +19,8 @@ export class CreateUserProvider {
 
     @Inject(forwardRef(() => HashingProvider))
     private readonly hashingProvider: HashingProvider,
+
+    private readonly mailService: MailService,
   ) {}
   public async createUser(createUserDto: CreateUserDto) {
     //  check is user already exists with same email
@@ -46,6 +49,11 @@ export class CreateUserProvider {
         ),
       });
       try {
+        try {
+          await this.mailService.sendUserWelcome(newUser);
+        } catch (error) {
+          console.log('❌❌❌ Failed to send welcome error', error);
+        }
         return this.userRepository.save(newUser);
       } catch (error) {
         throw new RequestTimeoutException(
