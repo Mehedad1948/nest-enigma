@@ -22,7 +22,11 @@ export class UploadsService {
     private readonly uploadsRepository: Repository<Upload>,
   ) {}
   public async uploadFile(file: Express.Multer.File) {
-    if (['image/gif', 'image/jpeg', 'image/png'].includes(file.mimetype)) {
+    if (
+      !['image/gif', 'image/jpeg', 'image/jpg', 'image/png'].includes(
+        file.mimetype,
+      )
+    ) {
       throw new BadRequestException('Mime type is not supported');
     }
 
@@ -39,6 +43,8 @@ export class UploadsService {
       const upload = this.uploadsRepository.create(uploadFile);
       return await this.uploadsRepository.save(upload);
     } catch (error) {
+      console.log('➡️➡️➡️ UploadsService error', error);
+
       throw new ConflictException(error);
     }
   }

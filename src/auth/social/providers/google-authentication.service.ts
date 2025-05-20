@@ -28,8 +28,6 @@ export class GoogleAuthenticationService implements OnModuleInit {
   onModuleInit() {
     const clientId = this.jwtConfiguration.googleClientId;
     const clientSecret = this.jwtConfiguration.googleClientSecret;
-    console.log('👌👌👌0', clientId);
-    console.log('🚀🚀🚀🚀', clientSecret);
 
     this.oauth2Client = new OAuth2Client(clientId, clientSecret);
   }
