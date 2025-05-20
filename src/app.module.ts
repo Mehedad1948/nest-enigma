@@ -20,6 +20,7 @@ import { AuthenticationGuard } from './auth/guards/authentication/authentication
 import { DataResponseInterceptor } from './common/interceptor/data-response/data-response.interceptor';
 import { UploadsModule } from './uploads/uploads.module';
 import { UploadsService } from './uploads/providers/uploads.service';
+import { MailModule } from './mail/mail.module';
 const ENV = process.env.NODE_ENV || 'development';
 
 @Module({
@@ -58,6 +59,7 @@ const ENV = process.env.NODE_ENV || 'development';
     }),
     MetaOptionsModule,
     UploadsModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [

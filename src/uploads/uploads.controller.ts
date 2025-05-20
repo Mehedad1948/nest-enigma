@@ -21,7 +21,6 @@ export class UploadsController {
   })
   @Post('file')
   public uploadFile(@UploadedFile() file: Express.Multer.File) {
-
     return this.uploadService.uploadFile(file);
   }
 }
